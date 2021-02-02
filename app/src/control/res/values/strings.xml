@@ -1,0 +1,9 @@
+<resources>
+    <string name="pref_category_cpu_freq_switch">CPU FREQUENCY SWITCH</string>
+    <string name="pref_category_cpu_freq_switch_label">pref_cpu_freq_switch</string>
+
+    <string name="pref_cpu_freq_switch">Switch CPU freq panel visibility</string>
+    <string name="pref_cpu_freq_switch_label">sel_cpu_freq_switch</string>
+    <string name="pref_cpu_freq_switch_summary_on">Switch CPU freq panel visible</string>
+    <string name="pref_cpu_freq_switch_summary_off">Switch CPU freq panel invisible</string>
+</resources>

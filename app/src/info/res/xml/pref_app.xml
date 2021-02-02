@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_period"
+        android:key="@string/pref_category_period_label">
+
+        <EditTextPreference
+            android:key="@string/pref_period_label"
+            android:title="@string/pref_period"
+            android:defaultValue="5"
+            android:summary="5"
+            android:numeric="integer"
+            android:maxLength="2"
+            android:inputType="number"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_visibility"
+        android:key="@string/pref_category_visibility_label">
+
+        <CheckBoxPreference
+            android:key="@string/pref_cpu_label"
+            android:title="@string/pref_cpu"
+            android:summaryOn="@string/pref_cpu_summary_on"
+            android:summaryOff="@string/pref_cpu_summary_off"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_cpu_avg_label"
+            android:title="@string/pref_cpu_avg"
+            android:summaryOn="@string/pref_cpu_avg_summary_on"
+            android:summaryOff="@string/pref_cpu_avg_summary_off"
+            android:dependency="@string/pref_cpu_label"
+            android:defaultValue="false"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_gpu_label"
+            android:title="@string/pref_gpu"
+            android:summaryOn="@string/pref_gpu_summary_on"
+            android:summaryOff="@string/pref_gpu_summary_off"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_fps_label"
+            android:title="@string/pref_fps"
+            android:summaryOn="@string/pref_fps_summary_on"
+            android:summaryOff="@string/pref_fps_summary_off"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_graph"
+        android:key="@string/pref_category_graph_label">
+
+        <CheckBoxPreference
+            android:key="@string/pref_graph_label"
+            android:title="@string/pref_graph"
+            android:summaryOn="@string/pref_graph_summary_on"
+            android:summaryOff="@string/pref_graph_summary_off"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_layout"
+        android:key="@string/pref_category_layout_label">
+
+        <CheckBoxPreference
+            android:key="@string/pref_back_label"
+            android:title="@string/pref_back"
+            android:summaryOn="@string/pref_back_summary_on"
+            android:summaryOff="@string/pref_back_summary_off"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_pos_label"
+            android:title="@string/pref_pos"
+            android:summaryOn="@string/pref_pos_summary_on"
+            android:summaryOff="@string/pref_pos_summary_off"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_log"
+        android:key="@string/pref_category_log_label">
+
+        <CheckBoxPreference
+            android:key="@string/pref_log_label"
+            android:title="@string/pref_log"
+            android:summaryOn="@string/pref_log_summary_on"
+            android:summaryOff="@string/pref_log_summary_off"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

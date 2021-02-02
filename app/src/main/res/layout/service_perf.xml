@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:focusable="false"
+    android:clickable="false"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/info">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/cpu_info_title"
+            android:text="@string/cpu_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/cpu_info"
+            android:text="@string/cpu_info_default"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/gpu_info_title"
+            android:text="@string/gpu_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/gpu_info"
+            android:text="@string/gpu_info_default"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/cpu0_layout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/cpu0_title"
+            android:text="@string/cpu0_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/cpu0_value"
+            android:text="@string/cpu_default"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bar_graph_height"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/cpu0_graph"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/cpu1_layout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/cpu1_title"
+            style="@style/PerfTextMedium"
+            android:text="@string/cpu1_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/cpu1_value"
+            android:text="@string/cpu_default"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bar_graph_height"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/cpu1_graph"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/gpu_layout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/gpu_title"
+            style="@style/PerfTextMedium"
+            android:text="@string/gpu_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/gpu_value"
+            android:text="@string/gpu_default"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bar_graph_height"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/gpu_graph"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/fps_layout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/fps_title"
+            style="@style/PerfTextMedium"
+            android:text="@string/fps_label"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            style="@style/PerfTextMedium"
+            android:id="@+id/fps_value"
+            android:text="@string/fps_default"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bar_graph_height"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/fps_graph"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+</LinearLayout>

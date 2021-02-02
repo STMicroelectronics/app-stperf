@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">STPerf</string>
+
+    <string name="notification_title">STPerf</string>
+    <string name="notification_message">STPerf foreground service is running</string>
+    <string name="ticker_text">STPerf foreground service is running</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Layout -->
+    <string name="cpu_label">CPU</string>
+    <string name="cpu0_label">CPU0</string>
+    <string name="cpu1_label">CPU1</string>
+    <string name="gpu_label">GPU</string>
+    <string name="fps_label">FPS</string>
+
+    <string name="cpu_default">0%</string>
+    <string name="gpu_default">0%</string>
+    <string name="fps_default">0fps</string>
+
+    <string name="cpu_info_default">650MHz</string>
+    <string name="gpu_info_default">533MHz</string>
+
+    <string name="cur_freq">CPU freq:</string>
+    <string name="switch_freq">Switch CPU freq</string>
+
+    <!-- Notification -->
+    <string name="notification_name">ST Performance</string>
+    <string name="notification_description">ST Performance Foreground Service</string>
+
+    <string name="notification_settings_title">SETTINGS</string>
+    <string name="notification_stop_title">STOP</string>
+
+    <!-- Settings -->
+    <string name="pref_category_period">PERIOD</string>
+    <string name="pref_category_period_label">pref_period</string>
+
+    <string name="pref_period">Performance update period (seconds)</string>
+    <string name="pref_period_label">sel_period</string>
+
+    <string name="pref_category_visibility">VISIBILITY</string>
+    <string name="pref_category_visibility_label">pref_visibility</string>
+
+    <string name="pref_cpu">CPU performance visibility</string>
+    <string name="pref_cpu_label">sel_cpu</string>
+    <string name="pref_cpu_summary_on">CPU performance visible</string>
+    <string name="pref_cpu_summary_off">CPU performance invisible</string>
+
+    <string name="pref_cpu_avg">CPU average performance visibility</string>
+    <string name="pref_cpu_avg_label">sel_cpu_avg</string>
+    <string name="pref_cpu_avg_summary_on">CPU average performance visible</string>
+    <string name="pref_cpu_avg_summary_off">CPU details performance visible</string>
+
+    <string name="pref_gpu">GPU performance visibility</string>
+    <string name="pref_gpu_label">sel_gpu</string>
+    <string name="pref_gpu_summary_on">GPU performance visible</string>
+    <string name="pref_gpu_summary_off">GPU performance invisible</string>
+
+    <string name="pref_fps">Frame rate visibility</string>
+    <string name="pref_fps_label">sel_fps</string>
+    <string name="pref_fps_summary_on">Frame rate visible</string>
+    <string name="pref_fps_summary_off">Frame rate invisible</string>
+
+    <string name="pref_category_graph">BAR GRAPH</string>
+    <string name="pref_category_graph_label">pref_graph</string>
+
+    <string name="pref_graph">Bar graph visibility</string>
+    <string name="pref_graph_label">sel_graph</string>
+    <string name="pref_graph_summary_on">Bar graph visible</string>
+    <string name="pref_graph_summary_off">Bar graph invisible</string>
+
+    <string name="pref_category_layout">LAYOUT</string>
+    <string name="pref_category_layout_label">pref_layout</string>
+
+    <string name="pref_back">Background color</string>
+    <string name="pref_back_label">sel_back</string>
+    <string name="pref_back_summary_on">Background color enabled</string>
+    <string name="pref_back_summary_off">Background color disabled</string>
+
+    <string name="pref_pos">Position</string>
+    <string name="pref_pos_label">sel_pos</string>
+    <string name="pref_pos_summary_on">Show on top</string>
+    <string name="pref_pos_summary_off">Show at the bottom</string>
+
+    <string name="pref_category_log">TRACE (logcat)</string>
+    <string name="pref_category_log_label">pref_log</string>
+
+    <string name="pref_log">Performance Logging</string>
+    <string name="pref_log_label">sel_log</string>
+    <string name="pref_log_summary_on">Logging enabled</string>
+    <string name="pref_log_summary_off">Logging disabled</string>
+
+    <string name="pref_category_cpu_freq_switch">CPU FREQUENCY SWITCH</string>
+    <string name="pref_category_cpu_freq_switch_label">pref_cpu_freq_switch</string>
+
+    <string name="pref_cpu_freq_switch">Switch CPU freq panel visibility</string>
+    <string name="pref_cpu_freq_switch_label">sel_cpu_freq_switch</string>
+    <string name="pref_cpu_freq_switch_summary_on">Switch CPU freq panel visible</string>
+    <string name="pref_cpu_freq_switch_summary_off">Switch CPU freq panel invisible</string>
+
+</resources>
