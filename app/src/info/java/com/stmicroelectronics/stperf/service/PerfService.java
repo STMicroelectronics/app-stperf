@@ -165,7 +165,7 @@ public class PerfService extends Service {
                         .build();
 
                 startForeground(NOTIFICATION_ID, notification);
-                mPerformance.startDataUpdate(3000);
+                mPerformance.startDataUpdate(mPeriod * 1000);
                 break;
             case ACTION_STOP:
                 mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);

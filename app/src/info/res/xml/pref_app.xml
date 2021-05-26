@@ -10,7 +10,6 @@
             android:title="@string/pref_period"
             android:defaultValue="5"
             android:summary="5"
-            android:numeric="integer"
             android:maxLength="2"
             android:inputType="number"/>
     </PreferenceCategory>
