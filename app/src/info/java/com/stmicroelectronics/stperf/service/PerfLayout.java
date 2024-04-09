@@ -188,22 +188,12 @@ public class PerfLayout {
         }
 
         // initialize series
-        ValueDependentColor<DataPoint> colorPercent = new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getY() * 255/PerfDetail.BAR_MAX_PERCENT, (int) Math.abs(255 - (data.getY() * 255/PerfDetail.BAR_MAX_PERCENT)), 100);
-            }
-        };
+        ValueDependentColor<DataPoint> colorPercent = data -> Color.rgb((int) data.getY() * 255/PerfDetail.BAR_MAX_PERCENT, (int) Math.abs(255 - (data.getY() * 255/PerfDetail.BAR_MAX_PERCENT)), 100);
         mCpuSeries = initSeries(colorPercent);
         mCpu0Series = initSeries(colorPercent);
         mCpu1Series = initSeries(colorPercent);
         mGpuSeries = initSeries(colorPercent);
-        ValueDependentColor<DataPoint> colorFps = new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getY() * 255/PerfDetail.BAR_MAX_FPS, (int) Math.abs(255 - (data.getY() * 255/PerfDetail.BAR_MAX_FPS)), 100);
-            }
-        };
+        ValueDependentColor<DataPoint> colorFps = data -> Color.rgb((int) data.getY() * 255/PerfDetail.BAR_MAX_FPS, (int) Math.abs(255 - (data.getY() * 255/PerfDetail.BAR_MAX_FPS)), 100);
         mFpsSeries = initSeries(colorFps);
     }
 

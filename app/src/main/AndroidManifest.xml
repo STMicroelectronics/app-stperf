@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.stmicroelectronics.stperf.MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

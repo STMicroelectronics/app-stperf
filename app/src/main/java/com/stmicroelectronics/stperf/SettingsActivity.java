@@ -2,9 +2,7 @@ package com.stmicroelectronics.stperf;
 
 import android.os.Bundle;
 import android.text.InputType;
-import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
@@ -64,12 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (p.hasKey() && p.getKey().equals(getString(R.string.pref_period_label))) {
                     // set input type (xml inputType not taken into account)
-                    ((EditTextPreference) p).setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
-                        @Override
-                        public void onBindEditText(@NonNull EditText editText) {
-                            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        }
-                    });
+                    ((EditTextPreference) p).setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
                 }
             }
         }
