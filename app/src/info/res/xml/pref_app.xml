@@ -31,7 +31,7 @@
             android:summaryOn="@string/pref_cpu_avg_summary_on"
             android:summaryOff="@string/pref_cpu_avg_summary_off"
             android:dependency="@string/pref_cpu_label"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
 
         <CheckBoxPreference
             android:key="@string/pref_gpu_label"

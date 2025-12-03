@@ -105,6 +105,7 @@ public class PerfLayout {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        layoutParams.alpha = 0.8f; // required for a not touchable area
         layoutParams.format = PixelFormat.TRANSPARENT;
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;

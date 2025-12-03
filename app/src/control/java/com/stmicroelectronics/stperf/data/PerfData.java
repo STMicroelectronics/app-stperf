@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,10 +26,10 @@ import timber.log.Timber;
 public class PerfData implements Handler.Callback {
 
     private static final String CPU_INFO_PATH = "/proc/stat";
-    private static final String GPU_INFO_PATH = "/sys/kernel/debug/gc/idle";
+    private static final String GPU_INFO_PATH = "/sys/devices/platform/soc@0/42080000.bus/48280000.gpu/idle";
     private static final String FPS_INFO_PATH = "/sys/kernel/debug/dri/0/state";
 
-    private static final String GPU_VERSION_PATH = "/sys/kernel/debug/gc/version";
+    private static final String GPU_VERSION_PATH = "/sys/devices/platform/soc@0/42080000.bus/48280000.gpu/version";
     private static final String GPU_VERSION_OLD = "6.2.4";
     private static boolean mGpuNewVersion = false;
 
@@ -109,7 +111,7 @@ public class PerfData implements Handler.Callback {
                         mHandler.sendMessage(message);
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Timber.e(e.toString());
                 }
             }
         };
@@ -138,11 +140,11 @@ public class PerfData implements Handler.Callback {
     private String getCpuFrequency() {
         String str = PerfDetail.CPU_NO_INFO;
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(CPU_FREQ_GET_SPEED_PATH)), 32);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(CPU_FREQ_GET_SPEED_PATH))), 32);
             str = localBufferedReader.readLine();
             localBufferedReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e.toString());
         }
         return str;
     }
@@ -156,11 +158,11 @@ public class PerfData implements Handler.Callback {
     private List<String> getAvailableCpuFrequencies() {
         String str = PerfDetail.CPU_NO_INFO;
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(CPU_FREQ_GET_AVAILABLE_SPEED_PATH)), 64);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(CPU_FREQ_GET_AVAILABLE_SPEED_PATH))), 64);
             str = localBufferedReader.readLine();
             localBufferedReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e.toString());
         }
         return Arrays.asList(str.split("\\s"));
     }
@@ -187,11 +189,9 @@ public class PerfData implements Handler.Callback {
                     mCpuInfoUpdated = true;
                 } catch (IOException e) {
                     Timber.e("Not possible to write value to %s", CPU_FREQ_SET_SPEED_PATH);
-                    e.printStackTrace();
                 }
             } catch (FileNotFoundException e) {
                 Timber.e("Not possible to open %s", CPU_FREQ_SET_SPEED_PATH);
-                e.printStackTrace();
             }
         }
     }
@@ -200,7 +200,7 @@ public class PerfData implements Handler.Callback {
         float value;
         long total, idle;
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(CPU_INFO_PATH)), 800);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(CPU_INFO_PATH))), 800);
             String str = localBufferedReader.readLine() + localBufferedReader.readLine() + localBufferedReader.readLine();
             localBufferedReader.close();
             String[] arrayOfString = str.split(" ");
@@ -254,10 +254,10 @@ public class PerfData implements Handler.Callback {
                 mGpuNewVersion = !version[0].startsWith(GPU_VERSION_OLD);
                 Timber.d("GPU version %s", version[0]);
             } catch (IOException e) {
-                e.printStackTrace();
+                Timber.e(e.toString());
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Timber.e(e.toString());
         }
     }
 
@@ -272,7 +272,7 @@ public class PerfData implements Handler.Callback {
     */
     private void updateGpu(PerfDetail perfDetail) {
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(GPU_INFO_PATH)), 200);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(GPU_INFO_PATH))), 200);
             String str = localBufferedReader.readLine() + localBufferedReader.readLine() + localBufferedReader.readLine();
             localBufferedReader.close();
             String[] arrayOfString = str.split(" +");
@@ -298,7 +298,7 @@ public class PerfData implements Handler.Callback {
     */
     private void updateGpuNew(PerfDetail perfDetail) {
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(GPU_INFO_PATH)), 200);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(GPU_INFO_PATH))), 200);
             String str = localBufferedReader.readLine() + localBufferedReader.readLine() + localBufferedReader.readLine() + localBufferedReader.readLine();
             localBufferedReader.close();
             String[] arrayOfString = str.split(" +");
@@ -327,7 +327,7 @@ public class PerfData implements Handler.Callback {
 
     private void updateFps(PerfDetail perfDetail) {
         try {
-            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(FPS_INFO_PATH)), 1000);
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(FPS_INFO_PATH))), 1000);
             String str = localBufferedReader.readLine();
             while (! str.contains("user_updates")){
                 str = localBufferedReader.readLine();
@@ -343,7 +343,7 @@ public class PerfData implements Handler.Callback {
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        mPerfDetail = msg.getData().getParcelable(PERF_DETAIL);
+        mPerfDetail = msg.getData().getParcelable(PERF_DETAIL, PerfDetail.class);
         if (mPerfDetail != null) {
             if (mLog) {
                 Timber.d("CPU(%%) %.1f, CPU0(%%) %.1f, CPU1(%%) %.1f, GPU(%%) %.1f, FPS %d",

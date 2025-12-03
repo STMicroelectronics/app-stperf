@@ -1,5 +1,6 @@
 package com.stmicroelectronics.stperf.service;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -9,8 +10,12 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.IBinder;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
@@ -27,7 +32,7 @@ public class PerfService extends Service {
     private static final String ACTION_STOP = "com.stmicroelectronics.stperf.service.action.stop";
 
     private static final int NOTIFICATION_ID = 123456789;
-    private static final String NOTIFICATION_CHANNEL_ID  = "com.stmicroelectronics.stperf.service.notification.channel_id";
+    private static final String NOTIFICATION_CHANNEL_ID = "com.stmicroelectronics.stperf.service.notification.channel_id";
 
     private static final String DEFAULT_PERIOD = "5";
 
@@ -55,14 +60,14 @@ public class PerfService extends Service {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        mCpu = preferences.getBoolean(getString(R.string.pref_cpu_label),true);
-        mCpuAvg = preferences.getBoolean(getString(R.string.pref_cpu_avg_label),false);
-        mGpu = preferences.getBoolean(getString(R.string.pref_gpu_label),true);
-        mFps = preferences.getBoolean(getString(R.string.pref_fps_label),true);
-        mGraph = preferences.getBoolean(getString(R.string.pref_graph_label),false);
-        mBack = preferences.getBoolean(getString(R.string.pref_back_label),true);
-        mPos = preferences.getBoolean(getString(R.string.pref_pos_label),true);
-        mLog = preferences.getBoolean(getString(R.string.pref_log_label),false);
+        mCpu = preferences.getBoolean(getString(R.string.pref_cpu_label), true);
+        mCpuAvg = preferences.getBoolean(getString(R.string.pref_cpu_avg_label), true);
+        mGpu = preferences.getBoolean(getString(R.string.pref_gpu_label), true);
+        mFps = preferences.getBoolean(getString(R.string.pref_fps_label), true);
+        mGraph = preferences.getBoolean(getString(R.string.pref_graph_label), false);
+        mBack = preferences.getBoolean(getString(R.string.pref_back_label), true);
+        mPos = preferences.getBoolean(getString(R.string.pref_pos_label), true);
+        mLog = preferences.getBoolean(getString(R.string.pref_log_label), false);
 
         mPeriod = Long.parseLong(preferences.getString(getString(R.string.pref_period_label), DEFAULT_PERIOD));
 
@@ -78,33 +83,33 @@ public class PerfService extends Service {
         if (mPrefListener == null) {
             mPrefListener = (sharedPreferences, key) -> {
                 if (key.equals(getString(R.string.pref_cpu_label))) {
-                    mCpu = sharedPreferences.getBoolean(key,true);
+                    mCpu = sharedPreferences.getBoolean(key, true);
                 }
                 if (key.equals(getString(R.string.pref_cpu_avg_label))) {
-                    mCpuAvg = sharedPreferences.getBoolean(key,false);
+                    mCpuAvg = sharedPreferences.getBoolean(key, false);
                 }
                 if (key.equals(getString(R.string.pref_gpu_label))) {
-                    mGpu = sharedPreferences.getBoolean(key,true);
+                    mGpu = sharedPreferences.getBoolean(key, true);
                 }
                 if (key.equals(getString(R.string.pref_fps_label))) {
-                    mFps = sharedPreferences.getBoolean(key,true);
+                    mFps = sharedPreferences.getBoolean(key, true);
                 }
                 if (key.equals(getString(R.string.pref_period_label))) {
-                    mPeriod = Long.parseLong(sharedPreferences.getString(key,DEFAULT_PERIOD));
+                    mPeriod = Long.parseLong(sharedPreferences.getString(key, DEFAULT_PERIOD));
                     mPerformance.setPeriod(mPeriod * 1000);
                 }
                 if (key.equals(getString(R.string.pref_graph_label))) {
-                    mGraph = sharedPreferences.getBoolean(key,false);
+                    mGraph = sharedPreferences.getBoolean(key, false);
                 }
                 if (key.equals(getString(R.string.pref_log_label))) {
-                    mLog = sharedPreferences.getBoolean(key,false);
+                    mLog = sharedPreferences.getBoolean(key, false);
                     mPerformance.setLog(mLog);
                 }
                 if (key.equals(getString(R.string.pref_back_label))) {
-                    mBack = sharedPreferences.getBoolean(key,true);
+                    mBack = sharedPreferences.getBoolean(key, true);
                 }
                 if (key.equals(getString(R.string.pref_pos_label))) {
-                    mPos = sharedPreferences.getBoolean(key,true);
+                    mPos = sharedPreferences.getBoolean(key, true);
                 }
                 mLayout.updateLayoutVisibility(mCpu, mCpuAvg, mGpu, mFps, mGraph, mPos);
                 mLayout.setBackColor(mBack);
@@ -132,39 +137,29 @@ public class PerfService extends Service {
                 Intent stopIntent = new Intent(this, PerfService.class);
                 stopIntent.setAction(ACTION_STOP);
                 PendingIntent pendingStopIntent;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    pendingStopIntent = PendingIntent.getService(this,0,stopIntent,PendingIntent.FLAG_MUTABLE);
-                } else {
-                    pendingStopIntent = PendingIntent.getService(this,0,stopIntent,0);
-                }
-                NotificationCompat.Action stopAction = new NotificationCompat.Action.Builder(R.drawable.ic_stop,getString(R.string.notification_stop_title),pendingStopIntent).build();
+                pendingStopIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_MUTABLE);
+                NotificationCompat.Action stopAction = new NotificationCompat.Action.Builder(R.drawable.ic_stop, getString(R.string.notification_stop_title), pendingStopIntent).build();
 
                 // create action to open settings
                 // TODO: add dedicated icon
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 PendingIntent pendingSettingsIntent;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    pendingSettingsIntent = PendingIntent.getActivity(this,1,settingsIntent,PendingIntent.FLAG_MUTABLE);
-                } else {
-                    pendingSettingsIntent = PendingIntent.getActivity(this,1,settingsIntent,0);
-                }
-                NotificationCompat.Action settingsAction = new NotificationCompat.Action.Builder(R.drawable.ic_settings,getString(R.string.notification_settings_title),pendingSettingsIntent).build();
+                pendingSettingsIntent = PendingIntent.getActivity(this, 1, settingsIntent, PendingIntent.FLAG_MUTABLE);
+                NotificationCompat.Action settingsAction = new NotificationCompat.Action.Builder(R.drawable.ic_settings, getString(R.string.notification_settings_title), pendingSettingsIntent).build();
 
                 Intent notificationIntent = new Intent(this, MainActivity.class);
 
                 PendingIntent pendingIntent;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    pendingIntent = PendingIntent.getActivity(this, 2, notificationIntent, PendingIntent.FLAG_MUTABLE);
-                } else {
-                    pendingIntent = PendingIntent.getActivity(this, 2, notificationIntent, 0);
-                }
+                pendingIntent = PendingIntent.getActivity(this, 2, notificationIntent, PendingIntent.FLAG_MUTABLE);
 
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,getString(R.string.notification_name),NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, getString(R.string.notification_name), NotificationManager.IMPORTANCE_DEFAULT);
                 notificationChannel.setDescription(getString(R.string.notification_description));
                 mNotificationManager = getSystemService(NotificationManager.class);
+                // mNotificationManager = NotificationManagerCompat.from(this);
                 if (mNotificationManager != null) {
                     mNotificationManager.createNotificationChannel(notificationChannel);
                 }
+
 
                 Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setContentTitle(getText(R.string.notification_title))
@@ -174,16 +169,26 @@ public class PerfService extends Service {
                         .setTicker(getText(R.string.ticker_text))
                         .addAction(stopAction)
                         .addAction(settingsAction)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .build();
 
-                startForeground(NOTIFICATION_ID, notification);
-                mPerformance.startDataUpdate(mPeriod * 1000);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= 34) {
+                        startForeground(NOTIFICATION_ID,notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+                    } else{
+                        startForeground(NOTIFICATION_ID, notification);
+                    }
+                    // mNotificationManager.notify(NOTIFICATION_ID, notification);
+                    mPerformance.startDataUpdate(mPeriod * 1000);
+                }
                 break;
             case ACTION_STOP:
-                mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
+                if (mNotificationManager != null) {
+                    mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
+                }
                 mPerformance.stopDataUpdate();
                 mLayout.stopLayout();
-                stopForeground(true);
+                stopForeground(STOP_FOREGROUND_DETACH);
                 stopSelf();
                 // kill the application to free its memory usage (waiting clarification)
                 killApp();
@@ -201,7 +206,7 @@ public class PerfService extends Service {
             pids = am.getRunningAppProcesses();
             for (int i = 0; i < pids.size(); i++) {
                 ActivityManager.RunningAppProcessInfo info = pids.get(i);
-                if (info.processName.equalsIgnoreCase("com.stmicrolectronics.stperf")) {
+                if (info.processName.equalsIgnoreCase("com.stmicroelectronics.stperf")) {
                     android.os.Process.killProcess(info.pid);
                 }
             }

@@ -9,9 +9,12 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
 import androidx.preference.PreferenceManager;
 
 import com.stmicroelectronics.stperf.CustomButton;
@@ -24,11 +27,11 @@ import java.util.List;
 
 public class PerfService extends Service implements CustomButton.OnClickListener {
 
-    public static final String ACTION_START = "com.stmicrolectronics.stperf.service.action.start";
-    private static final String ACTION_STOP = "com.stmicrolectronics.stperf.service.action.stop";
+    public static final String ACTION_START = "com.stmicroelectronics.stperf.service.action.start";
+    private static final String ACTION_STOP = "com.stmicroelectronics.stperf.service.action.stop";
 
     private static final int NOTIFICATION_ID = 123456789;
-    private static final String NOTIFICATION_CHANNEL_ID  = "com.stmicrolectronics.stperf.service.notification.channel_id";
+    private static final String NOTIFICATION_CHANNEL_ID  = "com.stmicroelectronics.stperf.service.notification.channel_id";
 
     private static final String DEFAULT_PERIOD = "5";
 
@@ -79,45 +82,43 @@ public class PerfService extends Service implements CustomButton.OnClickListener
         mPerformance.setLog(mLog);
 
         if (mPrefListener == null) {
-            mPrefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if (key.equals(getString(R.string.pref_cpu_label))) {
-                        mCpu = sharedPreferences.getBoolean(key,true);
-                    }
-                    if (key.equals(getString(R.string.pref_cpu_avg_label))) {
-                        mCpuAvg = sharedPreferences.getBoolean(key,false);
-                    }
-                    if (key.equals(getString(R.string.pref_gpu_label))) {
-                        mGpu = sharedPreferences.getBoolean(key,true);
-                    }
-                    if (key.equals(getString(R.string.pref_fps_label))) {
-                        mFps = sharedPreferences.getBoolean(key,true);
-                    }
-                    if (key.equals(getString(R.string.pref_period_label))) {
-                        mPeriod = Long.parseLong(sharedPreferences.getString(key,DEFAULT_PERIOD));
-                        mPerformance.setPeriod(mPeriod * 1000);
-                    }
-                    if (key.equals(getString(R.string.pref_graph_label))) {
-                        mGraph = sharedPreferences.getBoolean(key,false);
-                    }
-                    if (key.equals(getString(R.string.pref_log_label))) {
-                        mLog = sharedPreferences.getBoolean(key,false);
-                        mPerformance.setLog(mLog);
-                    }
-                    if (key.equals(getString(R.string.pref_back_label))) {
-                        mBack = sharedPreferences.getBoolean(key,true);
-                    }
-                    if (key.equals(getString(R.string.pref_pos_label))) {
-                        mPos = sharedPreferences.getBoolean(key,true);
-                    }
-                    if (key.equals(getString(R.string.pref_cpu_freq_switch_label))) {
-                        mCpuFreqSwitch = sharedPreferences.getBoolean(key,true);
-                        mLayout.updateSwitchLayoutVisibility(mCpuFreqSwitch);
-                    }
-                    mLayout.updateLayoutVisibility(mCpu, mCpuAvg, mGpu, mFps, mGraph, mPos);
-                    mLayout.setBackColor(mBack);
+            mPrefListener = (sharedPreferences, key) -> {
+                assert key != null;
+                if (key.equals(getString(R.string.pref_cpu_label))) {
+                    mCpu = sharedPreferences.getBoolean(key,true);
                 }
+                if (key.equals(getString(R.string.pref_cpu_avg_label))) {
+                    mCpuAvg = sharedPreferences.getBoolean(key,false);
+                }
+                if (key.equals(getString(R.string.pref_gpu_label))) {
+                    mGpu = sharedPreferences.getBoolean(key,true);
+                }
+                if (key.equals(getString(R.string.pref_fps_label))) {
+                    mFps = sharedPreferences.getBoolean(key,true);
+                }
+                if (key.equals(getString(R.string.pref_period_label))) {
+                    mPeriod = Long.parseLong(sharedPreferences.getString(key,DEFAULT_PERIOD));
+                    mPerformance.setPeriod(mPeriod * 1000);
+                }
+                if (key.equals(getString(R.string.pref_graph_label))) {
+                    mGraph = sharedPreferences.getBoolean(key,false);
+                }
+                if (key.equals(getString(R.string.pref_log_label))) {
+                    mLog = sharedPreferences.getBoolean(key,false);
+                    mPerformance.setLog(mLog);
+                }
+                if (key.equals(getString(R.string.pref_back_label))) {
+                    mBack = sharedPreferences.getBoolean(key,true);
+                }
+                if (key.equals(getString(R.string.pref_pos_label))) {
+                    mPos = sharedPreferences.getBoolean(key,true);
+                }
+                if (key.equals(getString(R.string.pref_cpu_freq_switch_label))) {
+                    mCpuFreqSwitch = sharedPreferences.getBoolean(key,true);
+                    mLayout.updateSwitchLayoutVisibility(mCpuFreqSwitch);
+                }
+                mLayout.updateLayoutVisibility(mCpu, mCpuAvg, mGpu, mFps, mGraph, mPos);
+                mLayout.setBackColor(mBack);
             };
         }
 
@@ -141,18 +142,18 @@ public class PerfService extends Service implements CustomButton.OnClickListener
                 // TODO: add dedicated icon
                 Intent stopIntent = new Intent(this, PerfService.class);
                 stopIntent.setAction(ACTION_STOP);
-                PendingIntent pendingStopIntent = PendingIntent.getService(this,0,stopIntent,0);
+                PendingIntent pendingStopIntent = PendingIntent.getService(this,0,stopIntent, PendingIntent.FLAG_IMMUTABLE);
                 NotificationCompat.Action stopAction = new NotificationCompat.Action.Builder(R.drawable.ic_stop,getString(R.string.notification_stop_title),pendingStopIntent).build();
 
                 // create action to open settings
                 // TODO: add dedicated icon
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                PendingIntent pendingSettingsIntent = PendingIntent.getActivity(this,1,settingsIntent,0);
+                PendingIntent pendingSettingsIntent = PendingIntent.getActivity(this,1,settingsIntent, PendingIntent.FLAG_IMMUTABLE);
                 NotificationCompat.Action settingsAction = new NotificationCompat.Action.Builder(R.drawable.ic_settings,getString(R.string.notification_settings_title),pendingSettingsIntent).build();
 
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 PendingIntent pendingIntent =
-                        PendingIntent.getActivity(this, 2, notificationIntent, 0);
+                        PendingIntent.getActivity(this, 2, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
                 NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,getString(R.string.notification_name),NotificationManager.IMPORTANCE_DEFAULT);
                 notificationChannel.setDescription(getString(R.string.notification_description));
@@ -171,14 +172,19 @@ public class PerfService extends Service implements CustomButton.OnClickListener
                         .addAction(settingsAction)
                         .build();
 
-                startForeground(NOTIFICATION_ID, notification);
+                int type = 0;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    type = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
+                }
+                ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, type);
+
                 mPerformance.startDataUpdate(3000);
                 break;
             case ACTION_STOP:
                 mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
                 mPerformance.stopDataUpdate();
                 mLayout.stopLayout();
-                stopForeground(true);
+                ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
                 stopSelf();
                 // kill the application to free its memory usage (waiting clarification)
                 killApp();
@@ -196,7 +202,7 @@ public class PerfService extends Service implements CustomButton.OnClickListener
             pids = am.getRunningAppProcesses();
             for (int i = 0; i < pids.size(); i++) {
                 ActivityManager.RunningAppProcessInfo info = pids.get(i);
-                if (info.processName.equalsIgnoreCase("com.stmicrolectronics.stperf")) {
+                if (info.processName.equalsIgnoreCase("com.stmicroelectronics.stperf")) {
                     android.os.Process.killProcess(info.pid);
                 }
             }

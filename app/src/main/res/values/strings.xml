@@ -6,6 +6,8 @@
     <string name="ticker_text">STPerf foreground service is running</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="gpu_path">/sys/devices/platform/soc@0/$s/48280000.gpu/</string>
+
     <!-- Layout -->
     <string name="cpu_label">CPU</string>
     <string name="cpu0_label">CPU0</string>
@@ -17,8 +19,8 @@
     <string name="gpu_default">0%</string>
     <string name="fps_default">0fps</string>
 
-    <string name="cpu_info_default">650MHz</string>
-    <string name="gpu_info_default">533MHz</string>
+    <string name="cpu_info_default">1.5GHz</string>
+    <string name="gpu_info_default">800MHz</string>
 
     <string name="cur_freq">CPU freq:</string>
     <string name="switch_freq">Switch CPU freq</string>

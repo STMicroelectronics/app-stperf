@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 33
+    compileSdk 35
+    namespace 'com.stmicroelectronics.stperf'
     defaultConfig {
         applicationId "com.stmicrolectronics.stperf"
-        minSdkVersion 28
-        targetSdkVersion 33
-        versionCode 2
-        versionName "1.1"
+        minSdkVersion 33
+        targetSdk 35
+        versionCode 4
+        versionName '1.3'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -16,7 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "version"
+    flavorDimensions += "version"
     productFlavors {
         control {
             dimension "version"
@@ -27,24 +28,25 @@ android {
             dimension "version"
         }
     }
-    buildToolsVersion '33.0.0'
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.15.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'com.jjoe64:graphview:4.2.2'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
 
 configurations {
-    all {
+    configureEach {
         exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
     }
 }
